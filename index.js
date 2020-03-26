@@ -33,7 +33,16 @@ const getTagLength = (segCount) => {
 }
 
 const getSegCount = (text, chunkLen) => {
-    const segCount = Math.ceil((text.length)/(chunkLen-getTagLength(segCount)));   
+    let converged = false;
+    let segCount, segCountLen;
+    while(!converged) {
+        segCount = segCount || Math.ceil(text.length / chunkLen);
+        segCountLen = (segCount + '').length;
+        segCount = Math.ceil((text.length)/(chunkLen-getTagLength(segCount)));
+        if ((segCount + '').length === segCountLen) { 
+            converged = true;
+        }
+    }
     return segCount;  
 }
 
