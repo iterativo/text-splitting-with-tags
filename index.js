@@ -8,13 +8,22 @@ const text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi qui
 
 const chunkify = (text, chunkLen, segCount) => {
     const tagLength = getTagLength(segCount);
-    const segLength = chunkLen - tagLength + 1;
+    const segLength = chunkLen - tagLength;
     const regex = '.{1,' + segLength + '}';
     const chunks = text.match(new RegExp(regex, 'g'));
-    return chunks.map((c, i) => c + tag(i, segCount));
+    const maxDigits = (chunks.length + '').length;
+    return chunks.map((c, i) => c + tag(i, maxDigits, segCount));
 }
     
-const tag = (i, segCount) => `(${i}/${segCount})`;
+const tag = (i, maxDigits, segCount) => `(${format(i+1, maxDigits)}/${segCount})`;
+
+const format = (num, len) => {
+    let r = '' + num;
+    while(r.length < len) {
+        r = '0' + r;
+    }
+    return r;
+};
 
 const getTagLength = (segCount) => {
     const defaultCharCountPerTag = 3; // '(' + '/' + ')'
@@ -23,23 +32,17 @@ const getTagLength = (segCount) => {
     return tagLength;
 }
 
-const countExtraChunkTagChars = (segCount) => {
-    const extraChunkTagChars = getTagLength(segCount) * segCount;
-    return extraChunkTagChars;
-}
-
-const getSegCount = (textLength, chunkLen) => {
-    let segCount = Math.ceil(text.length / chunkLen);
-    const extraChunkTagChars = countExtraChunkTagChars(segCount);
-    segCount = Math.ceil((text.length + extraChunkTagChars)/chunkLen);   
+const getSegCount = (text, chunkLen) => {
+    const segCount = Math.ceil((text.length)/(chunkLen-getTagLength(segCount)));   
     return segCount;  
 }
 
 const solve = (text, chunkLen) => {
-    const segCount = getSegCount(text.length, chunkLen);
+    const segCount = getSegCount(text, chunkLen);
     const chunks = chunkify(text, chunkLen, segCount);
     return chunks;
 }
 
 const chunkLen = 25;
-console.log(solve(text, chunkLen));
+const result = solve(text, chunkLen);
+console.log(result);
