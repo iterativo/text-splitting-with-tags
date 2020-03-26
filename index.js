@@ -5,7 +5,7 @@ const text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi qui
 
 const chunkify = (text, l, segCount) => {
     const tagLength = getTagLength(segCount);
-    const segLength = l - tagLength;
+    const segLength = l - tagLength + 1;
     const regex = '.{1,' + segLength + '}';
     const chunks = text.match(new RegExp(regex, 'g'));
     return chunks.map((c, i) => c + tag(i, segCount));
@@ -25,21 +25,15 @@ const countExtraChunkTagChars = (segCount) => {
     return extraChunkTagChars;
 }
 
-const solve = (text, l) => {
+const getSegCount = (textLength, l) => {
     let segCount = Math.ceil(text.length / l);
+    const extraChunkTagChars = countExtraChunkTagChars(segCount);
+    segCount = Math.ceil((text.length + extraChunkTagChars)/l);   
+    return segCount;  
+}
 
-    // The attempt of this code is to get the new segment count
-    // after accounting for the extra chars needed for the page
-    // tags. However, we could do without this for now. Eventually,
-    // this may be needed to fix edge-case scenarios (e.g., when
-    // the total page count goes up by a power of 10 due to the extra
-    // page-tag chars).
-    //
-    // const extraChunkTagChars = countExtraChunkTagChars(segCount);
-    // console.log('extraChunkTagChars', extraChunkTagChars); 
-    // segCount = Math.ceil((text.length + extraChunkTagChars)/l);   
-    // console.log('segCount', segCount);
-
+const solve = (text, l) => {
+    const segCount = getSegCount(text.length, l);
     const chunks = chunkify(text, l, segCount);
     console.log('chunks', chunks);
 }
