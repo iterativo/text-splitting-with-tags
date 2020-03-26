@@ -5,58 +5,28 @@ const text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi qui
 
 const chunkify = (text, l) => {
     const chunks = text.match(new RegExp('.{1,' + l + '}', 'g'));
-    console.log(chunks);
+    return chunks;
+}
+
+const countExtraChunkTagChars = (segCount) => {
+    const defaultCharCountPerTag = 3; // '(' + '/' + ')'
+    const dynamicCharCountPerTag = (segCount + '').length * 2; // for curPage + totalPage
+    const tagLength = defaultCharCountPerTag + dynamicCharCountPerTag;
+    const extraChunkTagChars = tagLength * segCount;
+    return extraChunkTagChars;
 }
 
 const solve = (text, l) => {
-    const segCount = Math.ceil(text.length / l);
-    console.log('text.length', text.length);
     console.log('l', l);
+    let segCount = Math.ceil(text.length / l);
     console.log('segCount', segCount);
-    chunkify(text, l);
+    console.log('text.length', text.length);
+    const extraChunkTagChars = countExtraChunkTagChars(segCount);
+    console.log('extraChunkTagChars', extraChunkTagChars); 
+    segCount = Math.ceil((text.length + extraChunkTagChars)/l);   
+    console.log('segCount', segCount);
+    const chunks = chunkify(text, l);
+    console.log('chunks', chunks);
 }
 
 solve(text, 25);
-// const max = 25;
-
-// "Lorem(1/n)"
-
-// ["", ""]
-
-// const max = 25;
-// const ans = [];
-// const chars = text.split('');
-// let item = '';
-// for (var i = 0; i < chars.length; i++) {
-//     item += chars[i];
-//     if (i > 0 && i % max === 0) {
-//         ans.push(item);
-//         item = '';
-//     } else {
-//         if (i === chars.length - 1 && item.length > 0) {
-//             ans.push(item);
-//             break;
-//         }
-//     }
-// }
-// console.log(ans);
-
-// segmentCount = 20 => metadata length = "(01/20)".charCount()
-// 7 * 20 = 140 / 25 = + 6
-// ans.map(x => console.log(x.length));
-
-
-// string.length / max => segmentCount
-
-// const calculateSegmentCount = (text, max) => {
-//     const fixedCharCount = 3; // "(" + "/" + ")"
-//     let segmentCount = text.length / max;
-//     console.log('segmentCount', segmentCount);
-//     let metadataTagCount = fixedCharCount + (segmentCount + '').length * 2;
-//     let extraChars = metadataTagCount * segmentCount;
-//     let extraSegments = Math.ceil(extraChars / max);
-//     let newTotalSegments = segmentCount + extraSegments;
-//     console.log('newTotalSegments', newTotalSegments);
-// }
-
-// calculateSegmentCount(text, max);
