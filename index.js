@@ -1,5 +1,7 @@
 // Split the provided text into chunks of length `l` with appended `(x/n)` tag
-// signifying the current page `x` of a total of `n` pages.
+// where:
+//      x = current chunk number 
+//      n = total number of chunks
 
 const text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi quis accumsan quam, eget venenatis purus. Curabitur ac massa quis sem porta imperdiet vitae eget ipsum. Pellentesque dapibus lacus non viverra fermentum. Cras sodales metus vel quam dictum, ac luctus mauris sollicitudin. Aenean at dolor lobortis, condimentum sapien id, bibendum velit. Nunc in nunc erat. Integer ligula nisi, porttitor mattis venenatis vitae, facilisis vitae justo. Donec tristique sem vel diam tristique, eget venenatis enim faucibus. Fusce urna quam, bibendum vel turpis quis, porta eleifend diam. Cras arcu ex, sagittis ac hendrerit a, venenatis non sapien. Mauris vehicula semper ligula. Fusce vulputate tempus nisi, sit amet rutrum est commodo eu. Ut semper sodales sapien vel maximus. Nulla lacinia convallis ex, eu mollis nibh dapibus eu."
 
@@ -21,7 +23,7 @@ const getTagLength = (segCount) => {
 }
 
 const countExtraChunkTagChars = (segCount) => {
-    const extraChunkTagChars = getTagLength() * segCount;
+    const extraChunkTagChars = getTagLength(segCount) * segCount;
     return extraChunkTagChars;
 }
 
@@ -38,4 +40,5 @@ const solve = (text, l) => {
     console.log('chunks', chunks);
 }
 
-solve(text, 25);
+const l = 25;
+solve(text, l);
